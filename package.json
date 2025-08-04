@@ -1,0 +1,37 @@
+{
+  "name": "frontend-designer-test",
+  "version": "1.0.0",
+  "description": "Test tecnico per Frontend Designer - Plugin WordPress con errori da correggere",
+  "main": "index.js",
+  "scripts": {
+    "build": "sass wp-designer-plugin/assets/sass/main.sass wp-designer-plugin/assets/css/main.css --style=expanded",
+    "build:watch": "sass wp-designer-plugin/assets/sass/main.sass wp-designer-plugin/assets/css/main.css --style=expanded --watch",
+    "build:compressed": "sass wp-designer-plugin/assets/sass/main.sass wp-designer-plugin/assets/css/main.css --style=compressed"
+  },
+  "keywords": [
+    "wordpress",
+    "plugin",
+    "frontend",
+    "sass",
+    "javascript",
+    "php",
+    "test"
+  ],
+  "author": "Frontend Test Team",
+  "license": "GPL-2.0",
+  "devDependencies": {
+    "sass": "^1.69.0"
+  },
+  "engines": {
+    "node": ">=18.20.4",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/[username]/frontend-designer-test.git"
+  },
+  "bugs": {
+    "url": "https://github.com/[username]/frontend-designer-test/issues"
+  },
+  "homepage": "https://github.com/[username]/frontend-designer-test#readme"
+}
