@@ -1,76 +1,253 @@
-// Main SASS file per Designer Test Plugin - TEST 15 MINUTI
-// Contiene errori e parti mancanti da completare
+// Components SASS - TEST 15 MINUTI
+// File componenti con sintassi SASS corretta (senza punto e virgola)
 
-// ERRORE 1: Variabili mancano punto e virgola
-$primary-color: #3498db
-$secondary-color: #2c3e50
-$success-color: #27ae60
-$error-color: #e74c3c
-
-// ERRORE 2: Variabili spacing mancanti
-$font-family-base: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
-
-// ERRORE 3: Mixin responsive mancante (verrà implementato dal candidato)
-
-@import 'components'
-
-// Reset di base
-*
-    box-sizing: border-box
-    margin: 0
-    padding: 0
-
-// Container principale
-.designer-test-container
-    max-width: 1200px
-    margin: 0 auto
-    padding: 20px
-    font-family: $font-family-base
-        // Manca implementazione  
-    
-    &[data-color-scheme="red"]
-        // Manca implementazione
-
-// Header section
-.dt-header
-    text-align: center
+// Feature Cards - Grid layout secondo design reference
+.dt-features
+    display: grid
+    grid-template-columns: repeat(3, 1fr)
+    gap: 20px
     margin-bottom: 40px
     
-    .dt-title
-// Header styles
-.dt-header
+    @include tablet
+        grid-template-columns: repeat(2, 1fr)
+        gap: 15px
+    
+    @include mobile
+        grid-template-columns: 1fr
+        gap: 15px
+
+.dt-feature-card
+    background: white
+    padding: 30px 20px
+    border-radius: $card-radius
     text-align: center
-    margin-bottom: 40px
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1)
+    transition: transform 0.3s ease, box-shadow 0.3s ease
     
-    h1
-        font-size: 2.5rem
-        color: $primary-color
-        margin-bottom: 10px
-        
-        &:hover
-            color: darken($primary-color, 20%)
-            // ERRORE 4: Manca transizione hover
+    // Hover effect completo
+    &:hover, &.dt-card-hover
+        transform: translateY(-5px)
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15)
     
-    .dt-subtitle
-        font-size: 1.2rem
-        color: $secondary-color
-        margin: 0
-
-// ERRORE 5: Layout grid non implementato (da completare)
-.dt-content
-    // Manca CSS Grid per layout responsive
-
-// Form section
-.dt-form-section
-    background: #f8f9fa
-    padding: 30px
-    border-radius: 8px
-    margin-top: 40px
+    .dt-icon
+        font-size: 3rem
+        margin-bottom: 15px
+        display: block
     
     h3
         color: $secondary-color
-        margin-bottom: 20px
-        font-size: 1.5rem
+        margin: 15px 0 10px
+        font-size: 1.3rem
+        font-weight: bold
+    
+    p
+        color: #666
+        line-height: 1.6
+        margin: 0
+        font-size: 0.9rem
 
-// ERRORE 6: Media queries responsive mancanti
-// @media queries non implementate
+// Form styling
+.dt-contact-form
+    .dt-form-group
+        margin-bottom: 20px
+        
+        label
+            display: block
+            margin-bottom: 5px
+            font-weight: 600
+            color: $secondary-color
+            font-size: 1rem
+        
+        input, textarea
+            width: 100%
+            padding: 12px 15px
+            border: 2px solid #ddd
+            border-radius: 5px
+            font-size: 16px
+            font-family: $font-family-base
+            transition: border-color 0.3s ease, box-shadow 0.3s ease
+            
+            &:focus
+                outline: none
+                border-color: $primary-color
+                box-shadow: 0 0 0 3px rgba($primary-color, 0.1)
+            
+            &.dt-field-error
+                border-color: $error-color
+                box-shadow: 0 0 0 3px rgba($error-color, 0.1)
+        
+        textarea
+            resize: vertical
+            min-height: 100px
+            font-family: inherit
+
+// Buttons styling secondo design reference
+.dt-btn
+    padding: 12px 24px
+    border: none
+    border-radius: 5px
+    font-size: 16px
+    font-weight: 600
+    cursor: pointer
+    transition: all 0.3s ease
+    text-decoration: none
+    display: inline-block
+    font-family: $font-family-base
+    
+    &:disabled
+        opacity: 0.6
+        cursor: not-allowed
+        
+        &:hover
+            transform: none
+    
+    // Primary button (blue)
+    &.dt-btn-primary
+        background: $primary-color
+        color: white
+        
+        &:hover:not(:disabled)
+            background: darken($primary-color, 10%)
+            transform: translateY(-2px)
+            box-shadow: 0 4px 12px rgba($primary-color, 0.3)
+        
+        &.dt-btn-clicked
+            transform: scale(0.95)
+    
+    // Secondary button (outline)
+    &.dt-btn-secondary
+        background: transparent
+        color: $secondary-color
+        border: 2px solid $secondary-color
+        
+        &:hover:not(:disabled)
+            background: $secondary-color
+            color: white
+            transform: translateY(-2px)
+
+.dt-form-actions
+    display: flex
+    gap: 15px
+    margin-top: 25px
+
+// Messages styling
+.dt-message
+    padding: 15px 20px
+    border-radius: 5px
+    margin: 15px 0
+    font-weight: 600
+    opacity: 0
+    animation: fadeInMessage 0.5s ease forwards
+    
+    &.dt-message-success
+        background: lighten($success-color, 45%)
+        color: darken($success-color, 20%)
+        border-left: 4px solid $success-color
+    
+    &.dt-message-error
+        background: lighten($error-color, 45%)
+        color: darken($error-color, 20%)
+        border-left: 4px solid $error-color
+
+.dt-error-message
+    color: $error-color
+    font-size: 14px
+    margin-top: 5px
+    display: block
+    animation: slideInError 0.3s ease
+
+// Loading states
+.dt-loading
+    position: relative
+    
+    &::after
+        content: ""
+        position: absolute
+        top: 50%
+        left: 50%
+        width: 20px
+        height: 20px
+        margin-top: -10px
+        margin-left: -10px
+        border: 2px solid transparent
+        border-top: 2px solid $primary-color
+        border-radius: 50%
+        animation: spin 1s linear infinite
+
+.dt-btn.dt-loading
+    pointer-events: none
+    opacity: 0.7
+    
+    &::after
+        border-top-color: white
+
+// Animazioni keyframes
+@keyframes fadeInMessage
+    from
+        opacity: 0
+        transform: translateY(-10px)
+    to
+        opacity: 1
+        transform: translateY(0)
+
+@keyframes slideInError
+    from
+        opacity: 0
+        transform: translateX(-10px)
+    to
+        opacity: 1
+        transform: translateX(0)
+
+@keyframes spin
+    0%
+        transform: rotate(0deg)
+    100%
+        transform: rotate(360deg)
+
+// Toggle features button
+#toggleFeatures, .dt-toggle-btn
+    background: $secondary-color
+    color: white
+    border: none
+    padding: 10px 20px
+    border-radius: 5px
+    cursor: pointer
+    margin-bottom: 20px
+    transition: all 0.3s ease
+    font-family: $font-family-base
+    
+    &:hover
+        background: darken($secondary-color, 10%)
+        transform: translateY(-1px)
+
+// Responsive adjustments per components
+@include mobile
+    .dt-feature-card
+        padding: 20px 15px
+        
+        .dt-icon
+            font-size: 2.5rem
+        
+        h3
+            font-size: 1.2rem
+    
+    .dt-contact-form
+        .dt-form-group
+            input, textarea
+                font-size: 16px
+                padding: 12px
+    
+    .dt-btn
+        padding: 12px 20px
+        font-size: 16px
+        
+        &:hover
+            transform: none
+    
+    .dt-form-actions
+        flex-direction: column
+        gap: 10px
+    
+    .dt-message
+        margin: 10px 0
+        padding: 12px 15px
