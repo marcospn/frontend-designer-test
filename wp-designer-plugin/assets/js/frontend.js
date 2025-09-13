@@ -6,11 +6,11 @@
 (function($) {
     'use strict';
     
-    // ERRORE 1: Event listener fuori da document.ready
-    $('#designerTestForm').on('submit', handleFormSubmission);
-    $('#toggleFeatures').on('click', toggleFeatures);
-    
     $(document).ready(function() {
+        // ERRORE 1 RISOLTO: Event listeners spostati dentro document.ready
+        $('#designerTestForm').on('submit', handleFormSubmission);
+        $('#toggleFeatures').on('click', toggleFeatures);
+        
         initializePlugin();
     });
     
@@ -26,14 +26,15 @@
             }
         );
         
-        // ERRORE 2: Variabile non dichiarata
-        animationDuration = 300;
+        // ERRORE 2 RISOLTO: Dichiarata variabile con var
+        var animationDuration = 300;
         
-        // ERRORE 3: Metodo jQuery errato
+        // ERRORE 3 RISOLTO: Corretto "addClas" in "addClass" e fix del contesto this
         $('.dt-btn').click(function(e) {
-            $(this).addClas('dt-btn-clicked'); // addClass scritto male
+            var $button = $(this);
+            $button.addClass('dt-btn-clicked');
             setTimeout(function() {
-                $(this).removeClass('dt-btn-clicked');
+                $button.removeClass('dt-btn-clicked');
             }, animationDuration);
         });
     }
@@ -63,8 +64,8 @@
                 hideLoading();
                 if (response.success) {
                     showMessage('success', response.data.message);
-                    // ERRORE 4: Metodo errato per reset form
-                    $('#designerTestForm').clear();
+                    // ERRORE 4 RISOLTO: Corretto metodo per reset form
+                    $('#designerTestForm')[0].reset();
                 } else {
                     showMessage('error', 'Errore nell\'invio del form');
                 }
@@ -79,13 +80,17 @@
     function validateForm(data) {
         var isValid = true;
         
+        // Rimuovi messaggi di errore precedenti
+        $('.dt-error-message').remove();
+        $('.dt-field-error').removeClass('dt-field-error');
+        
         if (data.name.length < 2) {
             showFieldError('dt-name', 'Il nome deve essere di almeno 2 caratteri');
             isValid = false;
         }
         
-        // ERRORE 5: Email regex manca escape per il punto
-        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/;
+        // ERRORE 5 RISOLTO: Email regex con escape corretto per il punto
+        var emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
         if (!emailRegex.test(data.email)) {
             showFieldError('dt-email', 'Email non valida');
             isValid = false;
@@ -107,14 +112,6 @@
                 $('#toggleFeatures').text('Mostra Features');
             }
         });
-    }
-    
-    function showLoading() {
-        $('.dt-btn-primary').prop('disabled', true).text('Invio in corso...');
-    }
-    
-    function hideLoading() {
-        $('.dt-btn-primary').prop('disabled', false).text('Invia Messaggio');
     }
     
     function showLoading() {
