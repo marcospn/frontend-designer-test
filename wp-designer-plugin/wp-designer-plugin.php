@@ -19,13 +19,13 @@ class DesignerTestPlugin {
     public function __construct() {
         add_action('init', array($this, 'init'));
         add_action('wp_enqueue_scripts', array($this, 'enqueue_assets'));
-        // ERRORE 1: Manca parentesi chiusa
-        add_shortcode('designer_test', array($this, 'render_shortcode');
+        // ERRORE 1 RISOLTO: Aggiunta parentesi chiusa mancante
+        add_shortcode('designer_test', array($this, 'render_shortcode'));
     }
     
     public function init() {
-        // ERRORE 2: Manca punto e virgola
-        load_plugin_textdomain('designer-test', false, dirname(plugin_basename(__FILE__)) . '/languages')
+        // ERRORE 2 RISOLTO: Aggiunto punto e virgola mancante
+        load_plugin_textdomain('designer-test', false, dirname(plugin_basename(__FILE__)) . '/languages');
     }
     
     public function enqueue_assets() {
@@ -36,11 +36,11 @@ class DesignerTestPlugin {
             '1.0.0'
         );
         
-        // ERRORE 3: Manca dipendenza jQuery
+        // ERRORE 3 RISOLTO: Aggiunta dipendenza jQuery
         wp_enqueue_script(
             'designer-test-script',
             plugin_dir_url(__FILE__) . 'assets/js/frontend.js',
-            array(),
+            array('jquery'),
             '1.0.0',
             true
         );
@@ -51,7 +51,7 @@ class DesignerTestPlugin {
         ));
     }
     
-    // ERRORE 4: Output buffering non implementato
+    // ERRORE 4 RISOLTO: Implementato output buffering
     public function render_shortcode($atts) {
         $attributes = shortcode_atts(array(
             'title' => 'Test Component',
@@ -59,8 +59,9 @@ class DesignerTestPlugin {
             'color_scheme' => 'blue'
         ), $atts);
         
+        ob_start();
         include plugin_dir_path(__FILE__) . 'templates/shortcode-template.php';
-        // Manca return con output buffering
+        return ob_get_clean();
     }
     
     public function handle_form_submission() {
@@ -73,14 +74,14 @@ class DesignerTestPlugin {
         $email = sanitize_email($_POST['email']);
         $message = sanitize_textarea_field($_POST['message']);
         
-        // ERRORE 5: Parentesi mancante
+        // ERRORE 5 RISOLTO: Aggiunta parentesi chiusa mancante
         wp_send_json_success(array(
             'message' => 'Form submitted successfully!',
             'data' => array(
                 'name' => $name,
                 'email' => $email
             )
-        // Manca parentesi chiusa
+        ));
     }
 }
 
