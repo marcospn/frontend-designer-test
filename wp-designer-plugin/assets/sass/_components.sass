@@ -14,12 +14,12 @@
     border-radius: 10px
     text-align: center
     box-shadow: 0 2px 10px rgba(0,0,0,0.1)
-    transition: transform 0.3s ease
+    transition: transform 0.3s ease, box-shadow 0.3s ease
     
-    // ERRORE 1: Hover state incompleto
-    &:hover
+    // ERRORE 1 RISOLTO: Hover state completo
+    &:hover, &.dt-card-hover
         transform: translateY(-5px)
-        // Manca box-shadow enhanced
+        box-shadow: 0 8px 25px rgba(0,0,0,0.15)
     
     .dt-icon
         font-size: 3rem
@@ -36,12 +36,7 @@
         line-height: 1.6
         margin: 0
 
-// Form styling
-.dt-contact-form
-    .dt-form-group
-        margin-bottom: 20px
-        
-// Form styling
+// Form styling - DUPLICAZIONE RIMOSSA
 .dt-contact-form
     .dt-form-group
         margin-bottom: 20px
@@ -58,21 +53,23 @@
             border: 2px solid #ddd
             border-radius: 5px
             font-size: 16px
-            transition: border-color 0.3s ease
+            transition: border-color 0.3s ease, box-shadow 0.3s ease
             
             &:focus
                 outline: none
                 border-color: $primary-color
-                // ERRORE 2: Box shadow focus mancante
+                // ERRORE 2 RISOLTO: Box shadow focus aggiunto
+                box-shadow: 0 0 0 3px rgba($primary-color, 0.1)
             
             &.dt-field-error
                 border-color: $error-color
+                box-shadow: 0 0 0 3px rgba($error-color, 0.1)
         
         textarea
             resize: vertical
             min-height: 100px
 
-// Buttons
+// Buttons - DUPLICAZIONE RIMOSSA E CORRETTA
 .dt-btn
     padding: 12px 24px
     border: none
@@ -87,42 +84,20 @@
     &:disabled
         opacity: 0.6
         cursor: not-allowed
+        
+        &:hover
+            transform: none
     
     &.dt-btn-primary
         background: $primary-color
         color: white
         
-        &:hover
+        &:hover:not(:disabled)
             background: darken($primary-color, 10%)
-            // ERRORE 3: Transform hover mancante
+            // ERRORE 3 RISOLTO: Transform hover aggiunto
+            transform: translateY(-2px)
+            box-shadow: 0 4px 12px rgba($primary-color, 0.3)
         
-        &.dt-btn-clicked
-            transform: scale(0.95)// Buttons
-.dt-btn
-    padding: 12px 24px
-    border: none
-    border-radius: 5px
-    font-size: 16px
-    font-weight: 600
-    cursor: pointer
-    transition: all 0.3s ease
-    text-decoration: none
-    display: inline-block
-    
-    // ERRORE 8: Stato disabled non gestito
-    &:disabled
-        opacity: 0.6
-        cursor: not-allowed
-    
-    &.dt-btn-primary
-        background: $primary-color
-        color: white
-        
-        &:hover
-            background: darken($primary-color, 10%)
-            // ERRORE 9: Transform hover mancante
-        
-        // ERRORE 10: Stato clicked non implementato
         &.dt-btn-clicked
             transform: scale(0.95)
     
@@ -131,37 +106,24 @@
         color: $secondary-color
         border: 2px solid $secondary-color
         
-        &:hover
+        &:hover:not(:disabled)
             background: $secondary-color
             color: white
+            transform: translateY(-2px)
 
 .dt-form-actions
     display: flex
     gap: 15px
     margin-top: 25px
 
-// Messages
+// Messages - DUPLICAZIONE RIMOSSA E CORRETTA
 .dt-message
     padding: 15px 20px
     border-radius: 5px
     margin: 15px 0
     font-weight: 600
-    
-    &.dt-message-success
-        background: lighten($success-color, 45%)
-        color: darken($success-color, 20%)
-    
-    &.dt-message-error
-        background: lighten($error-color, 45%)
-        color: darken($error-color, 20%)
-
-// ERRORE 4: Responsive design mancante per mobile
-// Media queries non implementate
-
-// ERRORE 5: Animazioni loading mancanti  
-// Stato loading per i form non implementato
-    border-radius: 5px
-    margin-top: 20px
+    opacity: 0
+    animation: fadeInMessage 0.5s ease forwards
     
     &.dt-message-success
         background: lighten($success-color, 45%)
@@ -178,13 +140,110 @@
     font-size: 14px
     margin-top: 5px
     display: block
+    animation: slideInError 0.3s ease
 
-// ERRORE 12: Card hover state class mancante
+// ERRORE 12 RISOLTO: Card hover state implementato
 .dt-card-hover
-    // Non implementato
+    transform: translateY(-5px)
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15)
 
-// ERRORE 13: Loading state non gestito
-// Mancano stili per stati di loading
+// ERRORE 13 RISOLTO: Loading states implementati
+.dt-loading
+    position: relative
+    
+    &::after
+        content: ""
+        position: absolute
+        top: 50%
+        left: 50%
+        width: 20px
+        height: 20px
+        margin-top: -10px
+        margin-left: -10px
+        border: 2px solid transparent
+        border-top: 2px solid $primary-color
+        border-radius: 50%
+        animation: spin 1s linear infinite
 
-// ERRORE 14: Animazioni non implementate
-// @keyframes mancanti per le animazioni
+.dt-btn.dt-loading
+    pointer-events: none
+    opacity: 0.7
+    
+    &::after
+        border-top-color: white
+
+// ERRORE 14 RISOLTO: Animazioni implementate
+@keyframes fadeInMessage
+    from
+        opacity: 0
+        transform: translateY(-10px)
+    to
+        opacity: 1
+        transform: translateY(0)
+
+@keyframes slideInError
+    from
+        opacity: 0
+        transform: translateX(-10px)
+    to
+        opacity: 1
+        transform: translateX(0)
+
+@keyframes spin
+    0%
+        transform: rotate(0deg)
+    100%
+        transform: rotate(360deg)
+
+@keyframes pulse
+    0%, 100%
+        opacity: 1
+    50%
+        opacity: 0.5
+
+// ERRORE 4 RISOLTO: Responsive design per mobile
+@include mobile
+    .dt-feature-card
+        padding: 20px 15px
+        
+        .dt-icon
+            font-size: 2.5rem
+        
+        h3
+            font-size: 1.2rem
+    
+    .dt-contact-form
+        .dt-form-group
+            input, textarea
+                font-size: 14px
+                padding: 10px 12px
+    
+    .dt-btn
+        padding: 10px 20px
+        font-size: 14px
+        
+        &:hover
+            transform: none // Disabilita hover su mobile
+    
+    .dt-form-actions
+        flex-direction: column
+        gap: 10px
+    
+    .dt-message
+        margin: 10px 0
+        padding: 12px 15px
+
+// Toggle features button
+.dt-toggle-btn
+    background: $secondary-color
+    color: white
+    border: none
+    padding: 10px 20px
+    border-radius: 5px
+    cursor: pointer
+    margin-bottom: 20px
+    transition: all 0.3s ease
+    
+    &:hover
+        background: darken($secondary-color, 10%)
+        transform: translateY(-1px)
